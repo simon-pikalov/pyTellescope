@@ -6,7 +6,7 @@ import Telcontrol
 #---------------------------
 # get telescope controll
 
-telescopeEnabled = True
+telescopeEnabled = False
 
 if (telescopeEnabled):
     telescope = Telcontrol.Telcontrol()
@@ -93,10 +93,10 @@ while cap.isOpened():
         dy = obj_center_y - target_center_y
 
         #print ("dist to obj "+str(dx)+","+str(dy))
-        #listX = [9, 8, 7]
         #listX = [8, 7, 6]
         #listX = [7, 6, 4]
-        listX = [6, 5, 4]
+        #listX = [6, 5, 4]
+        listX = [4, 3, 2]
 
         speedX = listX[0]
         if (abs(dx) < 100):
@@ -138,8 +138,33 @@ while cap.isOpened():
     frameCounter = frameCounter+1
     # print("frame counter"+str(frameCounter))
 
+    key = cv2.waitKey(1) & 0xFF
+
+    if key == ord("r"):
+        # select the bounding box of the object we want to track (make
+        # sure you press ENTER or SPACE after selecting the ROI)
+        bbox = cv2.selectROI("tracking", image)
+        # tracker = cv2.TrackerMIL_create()
+        # tracker = cv2.TrackerBoosting_create()
+        tracker = cv2.TrackerCSRT_create()
+        ok = tracker.init(image, bbox)
+        bbox = cv2.selectROI("tracking", image)
+
+    if key == ord('w'):  # Esc key to stop
+        telescope.manualUp()
+        print('up')
+    if key == ord('s'):  # Esc key to stop
+        print('down')
+        telescope.manualDown()
+    if key == ord('a'):  # Esc key to stop
+        print('left')
+        telescope.manualLeft()
+    if key == ord('d'):  # Esc key to stop
+        print('right')
+        telescope.manualRight()
+
     # let the drawing thread to work,by waiting for a key
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if  key == ord("q"):
         out.release()
         cap.release()
         cv2.destroyAllWindows()

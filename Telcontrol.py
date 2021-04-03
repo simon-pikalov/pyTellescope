@@ -23,7 +23,7 @@ class Telcontrol(tr.Thread):
         #self.ser = serial.Serial(port, baudrate)  # need to check the com
 
         self.ser = serial.Serial()
-        self.ser.port = "/dev/ttyUSB0"  # may be called something different
+        self.ser.port = "/dev/ttyUSB1"  # may be called something different
         self.ser.baudrate = 9600  # may be different
         isopenend = self.ser.open()
 
@@ -264,19 +264,19 @@ class Telcontrol(tr.Thread):
         print("vertical: " + str(angle_vertical))
 
 
-    def manualRight(self,speed):
+    def manualRight(self,speed=3):
         moveRight = chr(80) + chr(2) + chr(16) + chr(36) + chr(speed) + chr(0) + chr(0) + chr(0)
         self.ser.write(moveRight.encode())
 
-    def manualLeft(self,speed):
+    def manualLeft(self,speed=3):
         moveLeft = chr(80) + chr(2) + chr(16) + chr(37) + chr(speed) + chr(0) + chr(0) + chr(0)
         self.ser.write(moveLeft.encode())
 
-    def manualUp(self,speed):
+    def manualUp(self,speed=3):
         moveUp = chr(80) + chr(2) + chr(17) + chr(36) + chr(speed) + chr(0) + chr(0) + chr(0)
         self.ser.write(moveUp.encode())
 
-    def manualDown(self,speed):
+    def manualDown(self,speed=3):
         moveDown = chr(80) + chr(2) + chr(17) + chr(37) + chr(speed) + chr(0) + chr(0) + chr(0)
         self.ser.write(moveDown.encode())
 
